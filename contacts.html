@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Pet Clinic | Contacts</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/superfish.js"></script>
+<script>
+$(function(){
+	function equalHeight(group) {
+		var tallest = 0;
+		group.each(function() {
+			var thisHeight = $(this).height();
+			if(thisHeight > tallest) {
+				tallest = thisHeight;
+			}
+		});
+		group.height(tallest);
+	}	
+	equalHeight($(".box-1 .inner"));
+})
+</script>
+<!--[if lt IE 9]>
+<script src="js/html5.js"></script>
+<link rel="stylesheet" href="css/ie.css"> 
+<![endif]-->
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="inner">
+    <h1 class="logo"><a href="index.html">Kitty City</a></h1>
+    <div class="fright">
+      <div class="header-meta">
+        <form action="#" id="search-form" method="post">
+          <input type="text" onBlur="if(this.value==''){this.value='search'}" onFocus="if(this.value=='search'){this.value=''}" value="search" name="search">
+          <a class="search-form-submit"></a>
+        </form>
+        <div class="col-elem"> Have a problem with your kitty?<br>
+          Call us now: <span class="phone"> 1-888-867-5309 </span> </div>
+      </div>
+      <nav>
+        <ul class="sf-menu">
+          <li><a href="index.html">main</a></li>
+          <li> <a href="about.html">about</a></li>
+          <li> <a href="services.html">services</a>
+            <ul>
+              <li><a href="#">Link 1</a></li>
+              <li><a href="#">Link 2 </a></li>
+              <li> <a href="#">Link 3</a>
+                <ul>
+                  <li><a href="#">SubLink 3.1</a></li>
+                  <li><a href="#">SubLink 3.2</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Link 4</a></li>
+            </ul>
+          </li>
+          <li><a href="links.html">links</a></li>
+          <li class="current"><a href="contacts.html">contacts</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="clear"></div>
+  </div>
+</header>
+<!-- Content -->
+<section id="content">
+  <div class="container_24">
+    <div class="indent-bot-2 boxes-bg">
+      <!--
+      <article class="grid_6">
+        <div class="box-1">
+          <div class="inner">
+            <h3>Microchip implant</h3>
+            <p> Vivamus hendrerit mauris ut dui. gravida ut viverra lectus tincidunt. Cras mattis tempor eros nec tristique. </p>
+            <div class="btn-container">
+              <div class="button-box"> <a href="#" class="button">read more</a> </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="grid_6">
+        <div class="box-1">
+          <div class="inner">
+            <h3>Ultrasound</h3>
+            <p class="p0"> <strong class="str-1"> Vivamus hendrerit mauris ut dui gravida ut viverra </strong> </p>
+            <p> Cras mattis tempor eros nec tristique. Sed sed felis arcu, vel vehicula augue. Maecenas faucibus sagittis. cursus. </p>
+            <div class="btn-container">
+              <div class="button-box"> <a href="#" class="button">read more</a> </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="grid_6">
+        <div class="box-1">
+          <div class="inner">
+            <h3>Transport service</h3>
+            <p> Vivamus hendrerit mauris ut dui. gravida ut viverra lectus tincidunt. Cras mattis tempor eros nec tristique. </p>
+            <div class="btn-container">
+              <div class="button-box"> <a href="#" class="button">read more</a> </div>
+            </div>
+          </div>
+        </div>
+      </article>
+      <article class="grid_6">
+        <div class="box-1">
+          <div class="inner">
+            <h3>Vaccinations</h3>
+            <p class="p0"> <strong class="str-1"> Vivamus hendrerit mauris ut gravida ut viverra </strong> </p>
+            <p> Cras mattis tempor eros nec tristique. Sed sed felis arcu, vel vehicula augue. </p>
+            <div class="btn-container">
+              <div class="button-box"> <a href="#" class="button">read more</a> </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    -->
+      <div class="clear"></div>
+      <div class="wrapper">
+        <article class="grid_7 suffix_1">
+          <h2>Contact info:</h2>
+          <div class="map-container img-box">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3102.373742810726!2d-77.09254622406013!3d38.961133171710486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7c99173098e1d%3A0x76afe2cf9a46ac5a!2sGEICO%20Corporate%20Office!5e0!3m2!1sen!2sus!4v1717709639140!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <strong class="str-4">Kitty City</strong>
+          <dl class="address">
+            <dt>5260 Western Ave, Chevy Chase, MD 20815</dt>
+            <dd><span>Telephone:</span><strong>+1 888 867 5309</strong></dd>
+            <dd><span>Email:</span><a href="#">mail@kitty.city</a></dd>
+          </dl>
+        </article>
+        <article class="grid_16">
+          <h2>Contact form:</h2>
+          <form action="#" id="contact-form" method="post">
+            <fieldset>
+              <label class="name"> <span>Full name:</span>
+                <input type="text">
+              </label>
+              <label class="email"> <span>Email:</span>
+                <input type="email">
+              </label>
+              <label class="message"> <span>Message:</span>
+                <textarea></textarea>
+              </label>
+              <div class="btns"> <a class="link">Clear</a> <a class="link">Send</a> </div>
+            </fieldset>
+          </form>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Footer -->
+<footer>
+  <div class="copyright"> <strong class="footer-logo">Pet clinic</strong> <br> &copy; 2024
+    <div>Website by DotNet Bootcamp Group 1</a></div>
+  </div>
+  <ul class="social-list">
+    <li><a href="#"><img src="images/social-link-1.jpg" alt=""></a></li>
+    <li><a href="#"><img src="images/social-link-2.jpg" alt=""></a></li>
+    <li><a href="#"><img src="images/social-link-3.jpg" alt=""></a></li>
+    <li><a href="#"><img src="images/social-link-4.jpg" alt=""></a></li>
+  </ul>
+</footer>
+</body>
+</html>
