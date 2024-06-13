@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Pet Clinic | Services</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/jquery-1.7.1.min.js"></script>
+<script src="js/superfish.js"></script>
+<script>
+$(function(){
+	function equalHeight(group) {
+		var tallest = 0;
+		group.each(function() {
+			var thisHeight = $(this).height();
+			if(thisHeight > tallest) {
+				tallest = thisHeight;
+			}
+		});
+		group.height(tallest);
+	}	
+	equalHeight($(".box-1 .inner"));
+})
+</script>
+</head>
+<body>
+<!-- Header -->
+<header>
+  <div class="inner">
+    <h1 class="logo"><a href="index.html">Pet clinic</a></h1>
+    <div class="fright">
+      <div class="header-meta">
+        <form action="#" id="search-form" method="post">
+          <input type="text" onBlur="if(this.value==''){this.value='search'}" onFocus="if(this.value=='search'){this.value=''}" value="search" name="search">
+          <a class="search-form-submit"></a>
+        </form>
+        <div class="col-elem"> Have a problem with your pet?<br>
+          Call us now: <span class="phone"> 1-800-123-1234 </span> </div>
+      </div>
+      <nav>
+        <ul class="sf-menu">
+          <li><a href="index.html">main</a></li>
+          <li><a href="about.html">about</a></li>
+          <li class="current"> <a href="services.html">services</a>
+            <ul>
+              <li><a href="#">Maecenas faucibus</a></li>
+              <li><a href="#">Fusce tincidunt</a></li>
+              <li> <a href="#">tempor eros</a>
+                <ul>
+                  <li><a href="#">ut viverra</a></li>
+                  <li><a href="#">hendrerit mauris</a></li>
+                </ul>
+              </li>
+              <li><a href="#">mauris ut du</a></li>
+            </ul>
+          </li>
+          <li><a href="links.html">links</a></li>
+          <li><a href="contacts.html">contacts</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="clear"></div>
+  </div>
+</header>
+<!-- Content -->
+<section id="content">
+  <div class="container_24">
+    <div class="indent-bot-2 boxes-bg">
+      <div class="clear"></div>
+
+      <!--Our Containers-->
+      
+      <!-- Login Container --> 
+        <div id="login-page-container"> 
+          <div id="login-user-container"></div>
+      </div>
+      <div class="LoginPage-module__help___o2XM0">
+        <!-- Original Register Link if fix register form on register.html, can uncomment the below line
+        <a href="file:///C:/Users/A140953/Documents/RevatureTraining/KittyCity/KittyCityHTML/FrontEnd/services.html" class="TextButton-module__container____SoqG">Register</a>
+        -->
+      </div>
+
+      <!-- Data Containers-->
+      <div id="home-page-container">
+        <!-- Container used to add a new Person into the System --> 
+        <div id="add-persons-container"></div>
+
+        <!-- Container used to update a Person in the System --> 
+        <div id="update-persons-container"></div>
+
+        <!-- Container used to delete a Person from the System --> 
+        <div id="delete-persons-container"></div>
+
+        <!-- Container used to add a new Pet into the System -->
+        <div id="add-pets-container"></div>
+
+        <!-- Container used to update a Pet in the System --> 
+        <div id="update-pets-container"></div>
+
+        <!-- Container used to delete a Pet from the System --> 
+        <div id="delete-pets-container"></div>
+        
+        <!-- Container used to display all Persons in the System --> 
+        <div id="all-persons-container"></div>    
+    
+        <!-- Container used to display all Pets in the System -->
+        <div id="all-pets-container"></div>
+
+        <!-- Container used to display all Visits in the System -->
+        <div id="all-visits-container"></div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="copyright"> <strong class="footer-logo">Pet clinic</strong> <br> &copy; 2024
+    <div>Website by DotNet Bootcamp Group 1</a></div>
+  </div>
+  <ul class="social-list">
+    <li><a href="#"><img src="images/social-link-1.jpg" alt=""></a></li>
+    <li><a href="#"><img src="images/social-link-2.jpg" alt=""></a></li>
+    <li><a href="#"><img src="images/social-link-3.jpg" alt=""></a></li>
+    <li><a href="#"><img src="images/social-link-4.jpg" alt=""></a></li>
+  </ul>
+</footer>
+
+<script type="text/javascript" src="C:\Users\A140953\Documents\RevatureTraining\KittyCity\KittyCityHTML\FrontEnd\js\testingscript.js"></script>
+</body>
+</html>
