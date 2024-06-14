@@ -52,7 +52,7 @@ function GenerateLoginContainer() {
 
     // Add an event listener to the login button to handle login
     loginButton.addEventListener("click", ()=>{
-        window.open("file:///C:/Users/A140953/Documents/RevatureTraining/KittyCity/KittyCityHTML/FrontEnd/services.html");
+        location.href= "file:///C:/Users/A140953/Documents/RevatureTraining/KittyCity/KittyCityHTML/FrontEnd/services.html";
     });
 }
 
