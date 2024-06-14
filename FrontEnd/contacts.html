@@ -37,10 +37,10 @@ $(function(){
           <input type="text" onBlur="if(this.value==''){this.value='search'}" onFocus="if(this.value=='search'){this.value=''}" value="search" name="search">
           <a class="search-form-submit"></a>
         </form>
-        <div class="col-elem"> Have a problem with your kitty?<br>
-          Call us now: <span class="phone"> 1-888-867-5309 </span>
-        <br>
-       </div>
+        <div class="col-elem"> Have a problem with your pet?<br>
+          Call us now: <span class="phone"> 1-888-867-5309 </span> </div>
+          <br>
+        </div>
       <nav>
         <ul class="sf-menu">
           <li><a href="index.html">main</a></li>
@@ -107,22 +107,11 @@ $(function(){
     -->
       <div class="clear"></div>
       <div class="wrapper">
-        <article class="grid_7 suffix_1">
-          <h2>Contact info:</h2>
-          <div class="map-container img-box">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3102.373742810726!2d-77.09254622406013!3d38.961133171710486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7c99173098e1d%3A0x76afe2cf9a46ac5a!2sGEICO%20Corporate%20Office!5e0!3m2!1sen!2sus!4v1717709639140!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-          </div>
-          <strong class="str-4">Kitty City</strong>
-          <dl class="address">
-            <dt>5260 Western Ave, Chevy Chase, MD 20815</dt>
-            <dd><span>Telephone:</span><strong>+1 888 867 5309</strong></dd>
-            <dd><span>Email:</span><a href="#">mail@kitty.city</a></dd>
-          </dl>
-        </article>
-        <article class="grid_16">
+        <article class="grid_16 aligncenter">
+          <br>
           <h2>Contact form:</h2>
           <form action="#" id="contact-form" method="post">
-            <fieldset>
+            <fieldset class="aligncontform">
               <label class="name"> <span>Full name:</span>
                 <input type="text">
               </label>
@@ -132,9 +121,22 @@ $(function(){
               <label class="message"> <span>Message:</span>
                 <textarea></textarea>
               </label>
-              <div class="btns"> <a class="link">Clear</a> <a class="link">Send</a> </div>
+              <div class="btns"> <a href="#" class="button">Clear</a> <a href="#" class="button">Send</a> </div>
             </fieldset>
           </form>
+        </article>
+        <article class="grid_7 suffix_1 aligncenter">
+          <br><br><br>
+          <h2>Contact info:</h2>
+          <div class="map-container img-box">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3102.373742810726!2d-77.09254622406013!3d38.961133171710486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7c99173098e1d%3A0x76afe2cf9a46ac5a!2sGEICO%20Corporate%20Office!5e0!3m2!1sen!2sus!4v1717709639140!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+          <strong class="str-4">Kitty City</strong>
+          <dl class="address aligncontformtext">
+            <dt>5260 Western Ave, Chevy Chase, MD 20815</dt>
+            <dd><span>Telephone:</span><strong>+1 888 867 5309</strong></dd>
+            <dd><span>Email:</span><a href="#">mail@kitty.city</a></dd>
+          </dl>
         </article>
       </div>
     </div>

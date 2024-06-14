@@ -50,6 +50,18 @@ html {
 .aligncenter {
 	text-align:center
 }
+.aligntestimonials {
+	margin-left: 300px;
+}
+.aligntestimonials-2 {
+	margin-left: 30px;
+}
+.aligncontform {
+	margin-left: 65px;
+}
+.aligncontformtext {
+	margin-left: 10px;
+}
 .alignmiddle * {
 	vertical-align:middle
 }
