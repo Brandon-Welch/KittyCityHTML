@@ -27,6 +27,25 @@ html, body {
 html {
 	min-width:970px;
 }
+/* Table Structures---------------------------------------- */
+/* Examples: https://developer.mozilla.org/en-US/docs/Web/CSS/width*/
+/* */
+table {  
+	border-collapse: collapse;  
+	width: auto;  
+	}  
+	  
+	th, td {  
+	border: 1px solid #ddd;  
+	padding: 8px;  
+	text-align: left;  
+	}  
+	  
+	th {  
+	background-color: #f0a6a6;  
+	color: white;  
+	}  
+
 /* Global Structure---------------------------------------- */
 .main {
 	margin:0 auto;
@@ -51,10 +70,10 @@ html {
 	text-align:center
 }
 .aligntestimonials {
-	margin-left: 300px;
+	margin-left: 310px;
 }
 .aligntestimonials-2 {
-	margin-left: 30px;
+	margin-left: 40px;
 }
 .aligncontform {
 	margin-left: 65px;
@@ -114,7 +133,7 @@ h6 {
 	font-size:18px;
 	line-height:22px;
 }
-h2 span {
+h1 span {
 	color:#ec2323;
 	text-transform:uppercase;
 }
