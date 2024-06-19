@@ -171,7 +171,6 @@ function GenerateHomePageContainer() {
     GenerateAllVisitsContainer();
 
     GenerateLogoutContainer();
-//    GenerateLogOutButton();
 }
 
 function GenerateSystemHeader(){
@@ -275,6 +274,7 @@ function GenerateNewPersonContainer() {
 
     // Add an event listener to the login button to handle login
     personButton.addEventListener("click", GetNewPersonInformation);
+    personButton.addEventListener("click", ClearAddPersonFields);
 }
 
 // Function to get Person information from input fields
@@ -521,6 +521,7 @@ function GenerateUpdatePersonContainer() {
 
     // Add an event listener to the login button to handle login
     updatePersonButton.addEventListener("click", GetUpdatePersonInformation);
+    updatePersonButton.addEventListener("click", ClearUpdatePersonFields);
 }
 
 // Function to get Person information from input fields
@@ -857,6 +858,7 @@ function GenerateNewPetContainer() {
 
     // Add an event listener to the login button to handle login
     petButton.addEventListener("click", GetAddPetInformation);
+    petButton.addEventListener("click", ClearAddPetFields)
 }
 
 // Function to get Pet information from input fields
@@ -1186,6 +1188,7 @@ function GenerateUpdatePetContainer() {
 
     // Add an event listener to the update pet button
     updatePetButton.addEventListener("click", GetUpdatePetInformation);
+    updatePetButton.addEventListener("click", ClearAddPetFields);
 }
 
 // Function to get Pet information from input fields
@@ -1527,6 +1530,7 @@ function GenerateNewVisitContainer() {
 
     // Add an event listener to the login button to handle login
     visitButton.addEventListener("click", GetAddVisitInformation);
+    visitButton.addEventListener("click", ClearAddVisitFields);
 }
 
 // Function to get Visit information from input fields
@@ -1791,9 +1795,72 @@ function GenerateLogoutContainer() {
 
     // Append the logout button
     logoutContainerDiv.appendChild(logoutButton);
+    logoutButton.addEventListener("click", function(){ alert("You have been logged out!");});
     logoutButton.addEventListener("click", ()=>{window.location.replace("services.html");});
 
     // Append the UserName and UserPassword fields and labels to the Login container
     logoutContainerDiv.appendChild(logoutButton);
 
 }
+//---------------------------------//
+//----- Clear Inputs On Submit-----//
+//---------------------------------//
+
+function ClearAddPersonFields() {
+    document.getElementById('personType-input').value = "";
+    document.getElementById('firstName-input').value = "";
+    document.getElementById('lastName-input').value = "";
+    document.getElementById('phoneNumber-input').value = "";
+    document.getElementById('jobTitle-input').value = "";
+}
+
+function ClearUpdatePersonFields() {
+    document.getElementById('update-personId-input').value = "";
+    document.getElementById('update-personType-input').value = "";
+    document.getElementById('update-firstName-input').value = "";
+    document.getElementById('update-lastName-input').value = "";
+    document.getElementById('update-phoneNumber-input').value = "";
+    document.getElementById('update-jobTitle-input').value = "";
+}
+
+function ClearAddPetFields() {
+    document.getElementById('personId-input').value = "";
+    document.getElementById('petName-input').value = "";
+    document.getElementById('petColor-input').value = "";
+    document.getElementById('petFurType-input').value = "";
+    document.getElementById('petGender-input').value = "";
+    document.getElementById('petWeight-input').value = "";
+    document.getElementById('petAge-input').value = "";
+    document.getElementById('petInside-input').checked = false;
+    document.getElementById('seenBy-input').value = "";
+}
+
+function ClearUpdatePetFields() {
+    document.getElementById('update-petId-input').value = "";
+    document.getElementById('update-petpersonId-input').value = "";
+    document.getElementById('update-petName-input').value = "";
+    document.getElementById('update-petColor-input').value = "";
+    document.getElementById('update-petFurType-input').value = "";
+    document.getElementById('update-petGender-input').value = "";
+    document.getElementById('update-petWeight-input').value = "";
+    document.getElementById('update-petAge-input').value = "";
+    document.getElementById('update-petInside-input').checked = false;
+    document.getElementById('update-seenBy-input').value = "";
+    document.getElementById('update-rainbowBridgeDate-input').value = "";
+}
+
+function ClearAddVisitFields() {
+    document.getElementById('visitPersonId-input').value = "";
+    document.getElementById('visitPetId-input').value = "";
+    document.getElementById('visitWeight-input').value = "";
+    document.getElementById('visitAge-input').value = "";
+    document.getElementById('visitInside-input').checked = false;
+    document.getElementById('visitSeenBy-input').value = "";
+}
+
+//document.getElementById('').value = "";
+
+//TODO: update SPA w/ ClearFields Functions and Button Listners
+//TODO: update HTML w/ delete logins, get all logsins, update logins
+//TODO: add HTML clear add/update login functions/button listenrs
+//TODO: udpate SPA w/clearFields functions for login and listner for Login
