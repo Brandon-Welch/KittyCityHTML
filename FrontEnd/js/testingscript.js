@@ -15,6 +15,13 @@ const loginUserContainerDiv = document.querySelector("#login-user-container");
 // Home Page Containers
 const homePageContainerDiv = document.querySelector("#home-page-container");
 
+const parentMessageContainerDiv = document.querySelector("#parent-message-container");
+
+const addLoginContainerDiv = document.querySelector("#add-login-container");
+const updateLoginContainerDiv = document.querySelector("#update-login-container");
+const deleteLoginContainerDiv = document.querySelector("#delete-login-container");
+const allLoginsContainerDiv = document.querySelector("#all-logins-container");
+
 const addPersonContainerDiv = document.querySelector("#add-persons-container");
 const getPersonContainerDiv = document.querySelector("#get-persons-container");
 const getPersonDisplayContainerDiv = document.querySelector("#get-person-display-container");
@@ -154,23 +161,41 @@ function GenerateHomePageContainer() {
 
     GenerateSystemHeader();
 
+// Vet Employees have access to all sections of the system
+if (current_user.accessLevel == 1)
+{
     GenerateNewPersonContainer();
     GenerateGetPersonContainer();
     GenerateUpdatePersonContainer();
     GenerateDeletePersonContainer();
-    GenerateAllPersonsContainer();
+
+    GenerateNewLoginContainer();
+    GenerateUpdateLoginContainer();
+    GenerateDeleteLoginContainer();
+    GenerateAllLoginsContainer();
 
     GenerateNewPetContainer();
     GenerateGetPetContainer();
     GenerateUpdatePetContainer();
     GenerateDeletePetContainer();
-    GenerateAllPetsContainer();
 
     GenerateNewVisitContainer();
     GenerateGetVisitContainer();
-    GenerateAllVisitsContainer();
+}
+// Pet Parents can only view the data held in the system for them and their pets
+// This call will generate a message to display to the Pet Parent
+else
+{
+    GenerateParentMessageContainer();
+};
 
-    GenerateLogoutContainer();
+// All system uses will have the "ALL tables" created for them
+// tables are loaded with data based on Access level of the person logged in
+GenerateAllPersonsContainer();
+GenerateAllPetsContainer();
+GenerateAllVisitsContainer();
+
+GenerateLogoutContainer();
 }
 
 function GenerateSystemHeader(){
@@ -183,6 +208,408 @@ function GenerateSystemHeader(){
 
     // Append the header field
     loginUserContainerDiv.appendChild(systemHeader);
+}
+
+//-------------------------------------------------//
+// ACCESS LEVEL TWO                                //
+// Pet Parent Message Container Creation Functions //
+//-------------------------------------------------//
+
+// Function to build out the code for the container
+function GenerateParentMessageContainer() {
+    // Create the new Login container div
+    let messageDiv = document.createElement("div");
+    messageDiv.id = "message-container";
+
+    // Create header for New Message Section 
+    let messageHeader = document.createElement("h2");
+    messageHeader.type = 'text';
+    messageHeader.setAttribute("style", "background-color: #eed5d7;");
+    messageHeader.textContent = "Welcome Pet Parent to the Kitty City System - Your Person Id is - " + current_user.personId;
+
+    // Append the Login Div container to the Message container
+    parentMessageContainerDiv.appendChild(messageDiv);
+
+    // Append the Pet Parent message the ontainer
+    messageDiv.appendChild(messageHeader);
+}
+
+//---------------------------------------------//
+// ACCESS LEVEL ONE                            //
+// Add New Login Container Creation Functions  //
+//---------------------------------------------//
+
+// Function to build out the code for the container
+function GenerateNewLoginContainer() {
+    // Create the new Login container div
+    let loginDiv = document.createElement("div");
+    loginDiv.id = "newlogin-container";
+
+    // Create header for New Login Section 
+    let loginHeader = document.createElement("h2");
+    loginHeader.type = 'text';
+    loginHeader.setAttribute("style", "background-color: #eed5d7;");
+    loginHeader.textContent = "Add a new Login to the System";
+
+    // Select Person ID
+    let personIdHeader = document.createElement("h3");
+    personIdHeader.type = 'text';
+    personIdHeader.textContent = "Enter the Person ID to create a new Login";
+
+    let personIdInput = document.createElement('input');
+    personIdInput.type = 'number';
+    personIdInput.id = 'newlogin-personId-input';
+    personIdInput.style.display = 'block';
+
+    let personIdInputLabel = document.createElement('label');
+    personIdInputLabel.textContent = "Person ID";
+
+    // Create the User Name input field and label
+    let userNameInput = document.createElement('input');
+    userNameInput.type = 'text';
+    userNameInput.id = 'newlogin-userName-input';
+    userNameInput.style.display = 'block';
+
+    let userNameInputLabel = document.createElement('label');
+    userNameInputLabel.textContent = "User Name";
+
+    // Create the Password input field and label
+    let userPasswordInput = document.createElement('input');
+    userPasswordInput.type = 'text';
+    userPasswordInput.id = 'newlogin-userPassword-input';
+    userPasswordInput.style.display = 'block';
+
+    let userPasswordInputLabel = document.createElement('label');
+    userPasswordInputLabel.textContent = "Password";
+
+    // // Create the Access Level input field and label
+    // let accessLevelInput = document.createElement('input');
+    // accessLevelInput.type = 'text';
+    // accessLevelInput.id = 'accessLevel-input';
+    // accessLevelInput.style.display = 'block';
+
+    // let accessLevelInputLabel = document.createElement('label');
+    // accessLevelInputLabel.textContent = "Access Level";
+
+    // Create the Create New Login button
+    let loginButton = document.createElement('button');
+    loginButton.textContent = "Create New Login";
+
+    // Append the Login Div container to the Login container
+    addLoginContainerDiv.appendChild(loginDiv);
+
+    // Append the username and password fields and labels to the login container
+    loginDiv.appendChild(loginHeader);
+    loginDiv.appendChild(personIdHeader);
+    loginDiv.appendChild(personIdInputLabel);
+    loginDiv.appendChild(personIdInput);
+    loginDiv.appendChild(userNameInputLabel);
+    loginDiv.appendChild(userNameInput);
+    loginDiv.appendChild(userPasswordInputLabel);
+    loginDiv.appendChild(userPasswordInput);
+    // loginDiv.appendChild(accessLevelInputLabel);
+    // loginDiv.appendChild(accessLevelInput);
+    loginDiv.appendChild(loginButton);
+
+    // Add an event listener to the login button to handle login
+    loginButton.addEventListener("click", GetNewLoginInformation);
+    loginButton.addEventListener("click", ClearAddLoginFields);
+}
+
+// Function to get Login information from input fields
+async function GetNewLoginInformation() {
+    let personId = document.querySelector("#newlogin-personId-input").value;
+    let userName = document.querySelector("#newlogin-userName-input").value;
+    let userPassword = document.querySelector("#newlogin-userPassword-input").value;
+    // let accessLevel = document.querySelector("#accessLevel-input").value;
+    
+    // Call the function to add a new login to the system
+    await AddNewLogin(personId, userName, userPassword);
+    GenerateAllLoginsContainer();
+}
+
+// Function to add new Login into the system
+async function AddNewLogin(personId, userName, userPassword) {
+    try {
+        let response = await fetch(`${BASE_URL}/Login`, {
+            method: "POST",
+            headers: {
+                'Content-Type': "application/json" // Corrected the content type to 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    
+                    "userName": userName,
+                    "userPassword": userPassword,
+                    "personId": personId
+                    // "accessLevel": accessLevel,
+                })
+        });
+
+        let data = await response.json();
+        new_login = data;
+        console.log(new_login);
+        console.log(data);
+    } catch (e) {
+        console.error("Error Adding New Login:", e); // Added error logging
+    }
+}
+
+//---------------------------------------------//
+// Update Login Container Functions //
+//---------------------------------------------//
+// Function to build out the code for the container
+
+function GenerateUpdateLoginContainer() {
+
+    let updateLoginDiv = document.createElement("div");
+    updateLoginDiv.id = "update-login-container";
+    
+    // Create header for Update Login Section 
+    let updateLoginHeader = document.createElement("h2");
+    updateLoginHeader.type = 'text';
+    updateLoginHeader.setAttribute("style", "background-color: #eed5d7;");
+    updateLoginHeader.textContent = "Update a Login in the System";
+
+    let loginupdateIdInput = document.createElement('input');
+    loginupdateIdInput.type = 'number';
+    loginupdateIdInput.id = 'updatelogin-loginId-input';
+    loginupdateIdInput.style.display = 'block';
+
+    let loginIdInputLabel = document.createElement('label');
+    loginIdInputLabel.textContent = "Login ID";
+
+    // Create the UserName input field and label
+    let userNameInput = document.createElement('input');
+    userNameInput.type = 'text';
+    //userNameInput.placeholder = "Enter UserName"; //add default text in field
+   // userNameInput.setAttribute("required", "required")//makes field required 
+    userNameInput.id = 'update-username-input';
+    userNameInput.style.display = 'block';
+
+    let userNameInputLabel = document.createElement('label');
+    userNameInputLabel.textContent = "UserName";
+
+    // Create the UserPassword input field and label
+    let userPasswordInput = document.createElement('input');
+    userPasswordInput.type = 'password';
+    //userPasswordInput.placeholder = "Enter Password"; //add default text in field
+  //  userPasswordInput.setAttribute("required", "required")//makes field required 
+    userPasswordInput.id = 'update-password-input';
+    userPasswordInput.style.display = 'block';
+
+    let userPasswordInputLabel = document.createElement('label');
+    userPasswordInputLabel.textContent = "Password";
+
+    // Create the reset Login button
+    let resetButton = document.createElement('button');
+    resetButton.textContent = "Update Login";
+
+    updateLoginContainerDiv.appendChild(updateLoginDiv);
+
+    // Append the Id, UserName and UserPassword fields and labels to the Login container    
+    updateLoginDiv.appendChild(updateLoginHeader);
+    updateLoginDiv.appendChild(loginIdInputLabel);
+    updateLoginDiv.appendChild(loginupdateIdInput);
+    updateLoginDiv.appendChild(userNameInputLabel);
+    updateLoginDiv.appendChild(userNameInput);
+    updateLoginDiv.appendChild(userPasswordInputLabel);
+    updateLoginDiv.appendChild(userPasswordInput);
+    updateLoginDiv.appendChild(resetButton);
+
+    
+    // Add an event listener to the Login button to handle login
+    resetButton.addEventListener("click", GetUpdateLoginInformation);
+    resetButton.addEventListener("click", ClearUpdateLoginFields);
+}
+
+async function GetUpdateLoginInformation() {
+    let personId = document.querySelector("#updatelogin-loginId-input").value;
+    let username = document.querySelector("#update-username-input").value;
+    let password = document.querySelector("#update-password-input").value;
+
+    await UpdateLogin(personId, username, password);
+    GenerateAllLoginsContainer(); 
+}
+
+    async function UpdateLogin(personId, username, password) {
+        try {
+            let response = await fetch(`${BASE_URL}/Login/${personId}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': "application/json" // Corrected the content type to 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        
+                        "userName": username,
+                        "userPassword": password,
+                        "personId": personId
+
+                    })
+            });
+
+            let data = await response.json();
+            let updatedLogin = data;
+            console.log(updatedLogin);
+            updateData(updatedLogin);
+        } catch (e) {
+            e = "Error updating login!";
+            console.error(e); // Added error logging
+        }
+
+}
+
+//----------------------------------------------//
+// Delete Login Container Creation Functions   //
+//----------------------------------------------//
+
+// Function to build out the code for the container
+function GenerateDeleteLoginContainer() {
+    // Create header for Login Delete Section 
+    let deleteLoginHeader = document.createElement("h2");
+    deleteLoginHeader.type = 'text';
+    deleteLoginHeader.setAttribute("style", "background-color: #eed5d7;");
+    deleteLoginHeader.textContent = "Remove a Login from the System"
+
+    // Create the deleteLogin input field and label
+    let deleteLoginInput = document.createElement('input');
+    deleteLoginInput.type = 'number';
+    deleteLoginInput.placeholder = "Enter Login ID"; //add default text in field
+    deleteLoginInput.setAttribute("required", "required")//makes field required 
+    deleteLoginInput.id = 'deleteLogin-input';
+    deleteLoginInput.style.display = 'block';
+
+    let deleteLoginInputLabel = document.createElement('label');
+    deleteLoginInputLabel.textContent = " Login ID to Remove ";
+
+    // Create the DeleteLogin button
+    let deleteLoginButton = document.createElement('button');
+    deleteLoginButton.textContent = "Remove Login";
+
+    // Append the Delete Login fields and labels to the container
+    deleteLoginContainerDiv.appendChild(deleteLoginHeader);
+    deleteLoginContainerDiv.appendChild(deleteLoginInputLabel);
+    deleteLoginContainerDiv.appendChild(deleteLoginInput);
+    deleteLoginContainerDiv.appendChild(deleteLoginButton);
+
+    // Add an event listener to the Delete Login button to handle login
+    deleteLoginButton.addEventListener("click", DeleteLoginIdInformation);
+}
+
+// Function to get Login information from input fields
+async function DeleteLoginIdInformation() {
+    let loginId = document.querySelector("#deleteLogin-input").value;
+
+    // Call the function to get the login from the system
+    await DeleteLoginById(loginId);
+    GenerateAllLoginsContainer();
+}
+
+//Function to delete login
+async function DeleteLoginById(loginId) {
+    try {
+        let response = await fetch(`${BASE_URL}/Login/${loginId}`, { method: 'DELETE' });
+        if (response.ok) {
+            console.log("Login Id " + loginId + " was removed from the system")
+            alert("Login Id " + loginId + " was removed from the system");
+        }
+        else {
+            alert("Login ID was not located please try again.");
+        }
+    }
+    catch (Error) {
+        console.error(Error);
+    }
+}
+
+//----------------------------------------------//
+// List All Logins Container Creation Functions //
+//----------------------------------------------//
+
+// Function to build out the code for the container
+async function GenerateAllLoginsContainer() {
+
+    TeardownLoginTableContainer(); 
+
+    // Create Div to hold Header Text for table
+    let loginAllHeaderDiv = document.createElement("div");
+    loginAllHeaderDiv.id = "loginAllHeader-container";
+
+    // Create header for All Logins table 
+    let loginAllHeader = document.createElement("h2");
+    loginAllHeader.type = 'text';
+    loginAllHeader.setAttribute("style", "background-color: #eed5d7;");
+    loginAllHeader.textContent = "All Logins in the system";
+
+    allLoginsContainerDiv.appendChild(loginAllHeaderDiv);
+    loginAllHeaderDiv.appendChild(loginAllHeader);
+
+    let loginAllDiv = document.createElement("div");
+    loginAllDiv.id = "loginAll-container";
+    allLoginsContainerDiv.appendChild(loginAllDiv);
+
+    // Call to get a list of all Logins in the system
+    // then passed the list into the function that will 
+    // build and load a table with the data
+    let logins = await GetAllLogins();
+    loginAllDiv.innerHTML = GenerateLoginTable(logins);   
+}
+
+// Function to get a list of all Logins in the system
+async function GetAllLogins() {
+    try {
+        let response = await fetch(`${BASE_URL}/Login`);
+        let data = await response.json();
+        console.log(data);
+        return data;
+    } catch (Error) {
+        console.error(Error);
+    }
+}
+
+// Function to build a table and then load it with the passed in data 
+function GenerateLoginTable(logins) {
+
+    // This line declairs a new table node/section in your HTML
+    let loginTable = '<table>';
+
+    // This section builds the Column Header Names
+    //HACK: replaced Login Id w/ Person Id
+    loginTable += `<tr>
+        <th>Login Id</th>
+        <th>Person Id</th>
+        <th>User Name</th>
+        <th>Encrypted Password</th>
+        </tr>`;
+
+    // This section adds the passed in data into the table
+    //HACK: replaced loginId w/ personId
+    logins.forEach(l => {
+        loginTable += `<tr>
+        <td>${l.loginId}</td>
+        <td>${l.personId}</td>
+        <td>${l.userName}</td>
+        <td>${l.userPassword}</td>
+        </tr>`;
+    });
+
+    // This line closes out the table nod/section in your HTML
+    loginTable += '</table>';
+
+    return loginTable;
+}
+
+function TeardownLoginTableContainer() {
+    // Find the Display All Login container
+    let loginTableDiv = document.querySelector("#all-logins-container");
+
+    // If the Display All Login container exists, remove all its children
+    if (loginTableDiv != null) {
+        while (loginTableDiv.firstChild) {
+            loginTableDiv.firstChild.remove();
+        }
+    }
 }
 
 //---------------------------------------------//
@@ -569,7 +996,7 @@ async function UpdatePerson(personId, personType, firstName, lastName, phoneNumb
 }
 
 //----------------------------------------------//
-// Delete Person Container Creation Functions  //
+// Delete Person Container Creation Functions   //
 //----------------------------------------------//
 
 // Function to build out the code for the container
@@ -687,25 +1114,45 @@ function GeneratePersonTable(persons) {
 
     // This section builds the Column Header Names
     personTable += `<tr>
-        <th>Person Id</th>
-        <th>Person Type</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Phone Number</th>
-        <th>Job Title</th>
+    <th>Person Id</th>
+    <th>Person Type</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Phone Number</th>
+    <th>Job Title</th>
     </tr>`;
 
     // This section adds the passed in data into the table
-    persons.forEach(p => {
-        personTable += `<tr>
-        <td>${p.personId}</td>
-        <td>${p.personType}</td>
-        <td>${p.firstName}</td>
-        <td>${p.lastName}</td>
-        <td>${p.phoneNum}</td>
-        <td>${p.jobTitle}</td>
-        </tr>`;
-    });
+    // based on Access Level of logged in System User 
+    if (current_user.accessLevel == 1)
+    {
+        persons.forEach(p => {
+            personTable += `<tr>
+            <td>${p.personId}</td>
+            <td>${p.personType}</td>
+            <td>${p.firstName}</td>
+            <td>${p.lastName}</td>
+            <td>${p.phoneNum}</td>
+            <td>${p.jobTitle}</td>
+            </tr>`;
+        });
+    }
+    else
+    {
+        persons.forEach(p => {
+            if (current_user.personId == p.personId)
+                {
+                    personTable += `<tr>
+                    <td>${p.personId}</td>
+                    <td>${p.personType}</td>
+                    <td>${p.firstName}</td>
+                    <td>${p.lastName}</td>
+                    <td>${p.phoneNum}</td>
+                    <td>${p.jobTitle}</td>
+                    </tr>`;
+                }
+            });
+    }
 
     // This line closes out the table nod/section in your HTML
     personTable += '</table>';
@@ -724,6 +1171,7 @@ function TeardownPersonTableContainer() {
         }
     }
 }
+
 //-----------------------------------------------------//
 // Add New Pet Container Creation Functions            //
 //-----------------------------------------------------//
@@ -1188,7 +1636,7 @@ function GenerateUpdatePetContainer() {
 
     // Add an event listener to the update pet button
     updatePetButton.addEventListener("click", GetUpdatePetInformation);
-    updatePetButton.addEventListener("click", ClearAddPetFields);
+    updatePetButton.addEventListener("click", ClearUpdatePetFields);
 }
 
 // Function to get Pet information from input fields
@@ -1369,37 +1817,62 @@ function GeneratePetTable(pets) {
 
     // This section builds the Column Header Names
     petTable += `<tr>
-        <th>Pet Id</th>
-        <th>Person Id</th>
-        <th>Pet Name</th>
-        <th>Pet Color</th>
-        <th>Pet Fur Type</th>
-        <th>Pet Gender</th>
-        <th>Pet Weight</th>
-        <th>Pet Age</th>
-        <th>Pet InSidePet</th>
-        <th>Pet AppointmentDate</th>
-        <th>Pet SeenBy</th>
-        <th>Pet RainbowBridgeDate</th>
+    <th>Pet Id</th>
+    <th>Person Id</th>
+    <th>Pet Name</th>
+    <th>Pet Color</th>
+    <th>Pet Fur Type</th>
+    <th>Pet Gender</th>
+    <th>Pet Weight</th>
+    <th>Pet Age</th>
+    <th>Pet InSidePet</th>
+    <th>Pet AppointmentDate</th>
+    <th>Pet SeenBy</th>
+    <th>Pet RainbowBridgeDate</th>
     </tr>`;
 
-    // This section adds the passed in data into the table
-    pets.forEach(p => {
-        petTable += `<tr>
-        <td>${p.petId}</td>
-        <td>${p.personId}</td>
-        <td>${p.petName}</td>
-        <td>${p.color}</td>
-        <td>${p.furType}</td>
-        <td>${p.gender}</td>
-        <td>${p.weight}</td>
-        <td>${p.age}</td>
-        <td>${p.inSidePet}</td>
-        <td>${p.appointmentDate}</td>
-        <td>${p.seenBy}</td>
-        <td>${p.rainbowBridgeDate}</td>
-        </tr>`;
-    });
+    // This section adds the passed in data into the table 
+    // based on Access Level of logged in System User 
+    if (current_user.accessLevel == 1)
+        {
+            pets.forEach(p => {
+                petTable += `<tr>
+                <td>${p.petId}</td>
+                <td>${p.personId}</td>
+                <td>${p.petName}</td>
+                <td>${p.color}</td>
+                <td>${p.furType}</td>
+                <td>${p.gender}</td>
+                <td>${p.weight}</td>
+                <td>${p.age}</td>
+                <td>${p.inSidePet}</td>
+                <td>${p.appointmentDate}</td>
+                <td>${p.seenBy}</td>
+                <td>${p.rainbowBridgeDate}</td>
+                </tr>`;});
+        }
+    else 
+    {
+        pets.forEach(p =>  {
+            if (current_user.personId == p.personId)
+                {
+                    petTable += `<tr>
+                    <td>${p.petId}</td>
+                    <td>${p.personId}</td>
+                    <td>${p.petName}</td>
+                    <td>${p.color}</td>
+                    <td>${p.furType}</td>
+                    <td>${p.gender}</td>
+                    <td>${p.weight}</td>
+                    <td>${p.age}</td>
+                    <td>${p.inSidePet}</td>
+                    <td>${p.appointmentDate}</td>
+                    <td>${p.seenBy}</td>
+                    <td>${p.rainbowBridgeDate}</td>
+                    </tr>`;
+                }
+            });
+    }
 
     // This line closes out the table nod/section in your HTML
     petTable += '</table>';
@@ -1493,7 +1966,7 @@ function GenerateNewVisitContainer() {
     visitInsideInput.style.display = 'block';
 
     let visitInsideInputLabel = document.createElement('label');
-    visitInsideInputLabel.textContent = "InSideVisit - True or False";
+    visitInsideInputLabel.textContent = "InSidePet - True or False";
 
     // Create the SeenBy input field and label   
     let visitSeenByInput = document.createElement('input');
@@ -1562,7 +2035,7 @@ async function AddNewVisit(visitPetId, visitPersonId, visitWeight, visitAge, vis
                     "personId": visitPersonId,
                     "weight": visitWeight,
                     "age": visitAge,
-                    "inSideVisit": visitInside,
+                    "inSidePet": visitInside,
                     "appointmentDate": Date,
                     "seenBy": visitSeenBy
                 })
@@ -1637,49 +2110,73 @@ async function GetVisitById(id) {
 }
 
 // Function to build a table and then load it with the passed in data
-function GenerateVisitDisplayTable(visit) {
+function GenerateVisitTable(visits) {
 
     // This line declairs a new table node/section in your HTML
-    let visitDisplayTable = '<table>';
+    let visitTable = '<table>';
 
     // This section builds the Column Header Names
-    visitDisplayTable += `<tr>
-        <th>Visit Id</th>
-        <th>Pet Id</th>
-        <th>Person Id</th>
-        <th>Visit Weight</th>
-        <th>Visit Age</th>
-        <th>Visit InSidePet</th>
-        <th>Visit AppointmentDate</th>
-        <th>Visit SeenBy</th>
+    visitTable += `<tr>
+    <th>Visit Id</th>
+    <th>Pet Id</th>
+    <th>Person Id</th>
+    <th>Visit Weight</th>
+    <th>Visit Age</th>
+    <th>Visit InSidePet</th>
+    <th>Visit AppointmentDate</th>
+    <th>Visit SeenBy</th>
     </tr>`;
 
     // This section adds the passed in data into the table
-    visitDisplayTable += `<tr>
-        <td>${visit.visitId}</td>
-        <td>${visit.petId}</td>
-        <td>${visit.personId}</td>
-        <td>${visit.weight}</td>
-        <td>${visit.age}</td>
-        <td>${visit.inSidePet}</td>
-        <td>${visit.appointmentDate}</td>
-        <td>${visit.seenBy}</td>
-        </tr>`;
+    // based on Access Level of logged in System User 
+    if (current_user.accessLevel == 1)
+        {
+            visits.forEach(v => {
+                visitTable += `<tr>
+                <td>${v.visitId}</td>
+                <td>${v.petId}</td>
+                <td>${v.personId}</td>
+                <td>${v.weight}</td>
+                <td>${v.age}</td>
+                <td>${v.inSidePet}</td>
+                <td>${v.appointmentDate}</td>
+                <td>${v.seenBy}</td>
+                </tr>`;
+            });
+        }
+    else
+        {
+            visits.forEach(v => {
+                if (current_user.personId == v.personId)
+                    {
+                        visitTable += `<tr>
+                        <td>${v.visitId}</td>
+                        <td>${v.petId}</td>
+                        <td>${v.personId}</td>
+                        <td>${v.weight}</td>
+                        <td>${v.age}</td>
+                        <td>${v.inSidePet}</td>
+                        <td>${v.appointmentDate}</td>
+                        <td>${v.seenBy}</td>
+                        </tr>`;
+                    }
+                });
+        }
 
     // This line closes out the table nod/section in your HTML
-    visitDisplayTable += '</table>';
+    visitTable += '</table>';
 
-    return visitDisplayTable;
+    return visitTable;
 }
 
-function TeardownVisitDisplayTableContainer() {
-    // Find the Display Person container
-    let visitDisplayDiv = document.querySelector("#get-visit-display-container");
+function TeardownVisitTableContainer() {
+    // Find the Display All Visit container
+    let visitTableDiv = document.querySelector("#all-visits-container");
 
-    // If the Display Person container exists, remove all its children
-    if (visitDisplayDiv != null) {
-        while (visitDisplayDiv.firstChild) {
-            visitDisplayDiv.firstChild.remove();
+    // If the Display All Visit container exists, remove all its children
+    if (visitTableDiv != null) {
+        while (visitTableDiv.firstChild) {
+            visitTableDiv.firstChild.remove();
         }
     }
 }
@@ -1736,29 +2233,51 @@ function GenerateVisitTable(visits) {
 
     // This section builds the Column Header Names
     visitTable += `<tr>
-        <th>Visit Id</th>
-        <th>Pet Id</th>
-        <th>Person Id</th>
-        <th>Visit Weight</th>
-        <th>Visit Age</th>
-        <th>Visit InSidePet</th>
-        <th>Visit AppointmentDate</th>
-        <th>Visit SeenBy</th>
+    <th>Visit Id</th>
+    <th>Pet Id</th>
+    <th>Person Id</th>
+    <th>Visit Weight</th>
+    <th>Visit Age</th>
+    <th>Visit InSidePet</th>
+    <th>Visit AppointmentDate</th>
+    <th>Visit SeenBy</th>
     </tr>`;
 
     // This section adds the passed in data into the table
-    visits.forEach(v => {
-        visitTable += `<tr>
-        <td>${v.visitId}</td>
-        <td>${v.petId}</td>
-        <td>${v.personId}</td>
-        <td>${v.weight}</td>
-        <td>${v.age}</td>
-        <td>${v.inSidePet}</td>
-        <td>${v.appointmentDate}</td>
-        <td>${v.seenBy}</td>
-        </tr>`;
-    });
+    // based on Access Level of logged in System User 
+    if (current_user.accessLevel == 1)
+        {
+            visits.forEach(v => {
+                visitTable += `<tr>
+                <td>${v.visitId}</td>
+                <td>${v.petId}</td>
+                <td>${v.personId}</td>
+                <td>${v.weight}</td>
+                <td>${v.age}</td>
+                <td>${v.inSidePet}</td>
+                <td>${v.appointmentDate}</td>
+                <td>${v.seenBy}</td>
+                </tr>`;
+            });
+        }
+    else
+        {
+            visits.forEach(v => {
+                if (current_user.personId == v.personId)
+                    {
+                        visitTable += `<tr>
+                        <td>${v.visitId}</td>
+                        <td>${v.petId}</td>
+                        <td>${v.personId}</td>
+                        <td>${v.weight}</td>
+                        <td>${v.age}</td>
+                        <td>${v.inSidePet}</td>
+                        <td>${v.appointmentDate}</td>
+                        <td>${v.seenBy}</td>
+                        </tr>`;
+                    }
+                });
+        }
 
     // This line closes out the table nod/section in your HTML
     visitTable += '</table>';
@@ -1802,9 +2321,22 @@ function GenerateLogoutContainer() {
     logoutContainerDiv.appendChild(logoutButton);
 
 }
+
 //---------------------------------//
 //----- Clear Inputs On Submit-----//
 //---------------------------------//
+
+function ClearAddLoginFields() {
+    document.getElementById('newlogin-personId-input').value = "";
+    document.getElementById('newlogin-userName-input').value = "";
+    document.getElementById('newlogin-userPassword-input').value = "";
+}
+
+function ClearUpdateLoginFields() {
+    document.getElementById('updatelogin-loginId-input').value = "";
+    document.getElementById('update-username-input').value = "";
+    document.getElementById('update-password-input').value = "";
+}
 
 function ClearAddPersonFields() {
     document.getElementById('personType-input').value = "";
@@ -1860,7 +2392,6 @@ function ClearAddVisitFields() {
 
 //document.getElementById('').value = "";
 
-//TODO: update SPA w/ ClearFields Functions and Button Listners
-//TODO: update HTML w/ delete logins, get all logsins, update logins
-//TODO: add HTML clear add/update login functions/button listenrs
-//TODO: udpate SPA w/clearFields functions for login and listner for Login
+//TODO: add HTML update login
+//TODO: add HTML clear update login functions/button listenrs
+//TODO: update SPA w/ All ClearFields Functions and Button Listners

@@ -1,6 +1,7 @@
 using KittyCity.Data;
 using KittyCity.DTOs;
 using KittyCity.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,12 +20,27 @@ namespace KittyCity.Services
             var logins = _context.Logins
                     .Select(l => new LoginDTO
                     {
+                        LoginId = l.LoginId,
                         UserName = l.UserName,
-                        UserPassword = l.UserPassword,
+                        UserPassword = HidePassword(l.UserPassword),
                         PersonId = l.PersonId
                     }).ToList();
 
             return logins;
+        }
+
+        public static string HidePassword(string password)
+        {
+            Random encrypt = new Random();
+            string letters = "************ABCDE12345";
+            string hidePassWord = "";
+            
+            for (int i = 0; i<=8; i++)
+            {
+                int pick = encrypt.Next(letters.Length);
+                hidePassWord += letters[pick];
+            }
+            return hidePassWord;
         }
 
         public LoginDTO GetLoginById(int LoginId)
@@ -101,7 +117,8 @@ namespace KittyCity.Services
             var loginDto = new LoginDTO{
                 UserName = login.UserName,
                 UserPassword = login.UserPassword,
-                PersonId = login.PersonId
+                PersonId = login.PersonId,
+                AccessLevel = login.AccessLevel
             };
 
             return loginDto;
